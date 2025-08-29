@@ -1,0 +1,35 @@
+# WSL2 USB/IP 直通限制与经验总结
+
+## 问题描述
+
+在 WSL2 环境下，使用通用版 usbip 工具（`linux-tools-generic`）时，attach USB 设备（如 ST-Link）会出现如下警告：
+
+```
+WARNING: usbip not found for kernel 6.6.87.2-microsoft
+You may need to install the following packages for this specific kernel:
+  linux-tools-6.6.87.2-microsoft-standard-WSL2
+  linux-cloud-tools-6.6.87.2-microsoft-standard-WSL2
+```
+
+## 原因分析
+
+- WSL2 使用的是微软定制内核，APT 源没有配套的 kernel module/tools 包。
+- 通用 usbip 工具只能提供命令行，无法驱动内核 module，导致设备 attach 失败。
+
+## 现有解决方案
+
+1. **Windows 侧操作为主**  
+   - WSL2 仅做代码开发、编译
+   - 烧录、串口等直接用 Windows 工具
+
+2. **持续关注 WSL2 官方/社区动态**  
+   - 未来可能会支持 apt 一键安装或预装 usbip 工具
+
+## 实践建议
+
+- 遇到该警告/问题，无需反复尝试，当前无解。
+- 开发流程建议在 Windows 与 WSL2 间切换使用。
+
+## 参考链接
+
+- [WSL Issues - GitHub](https://github.com/microsoft/WSL/issues)
