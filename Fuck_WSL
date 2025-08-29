@@ -33,3 +33,30 @@ You may need to install the following packages for this specific kernel:
 ## 参考链接
 
 - [WSL Issues - GitHub](https://github.com/microsoft/WSL/issues)
+################################################################
+    豆包发现了端倪！！！copilot败下阵来，争辩休如息
+################################################################
+# WSL2 USB/IP 直通新方案经验总结
+
+## 新流程（usbipd-win 3.0+，WSL2最新版）
+
+1. **在 Windows PowerShell（管理员）执行：**
+   ```powershell
+   usbipd list
+   usbipd attach --wsl --busid <busid>
+   ```
+   - 设备会自动映射到所有WSL2发行版，无需在 WSL2 Ubuntu 内部手动attach。
+
+2. **在 WSL2 Ubuntu 内部：**
+   - 直接运行 `lsusb`、`ls /dev/ttyUSB*` 等命令查看设备节点。
+   - 设备已可被 Linux 工具访问（如 st-link、minicom、JLink）。
+
+## 说明
+
+- 该方案无需在 WSL2 内部安装 usbip 工具，省去旧版 attach 步骤。
+- 适用新版 WSL2 和 usbipd-win，推荐升级环境后使用。
+
+## 参考
+
+- [usbipd-win GitHub](https://github.com/dorssel/usbipd-win)
+- [微软 WSL2 官方文档](https://learn.microsoft.com/en-us/windows/wsl/connect-usb)
